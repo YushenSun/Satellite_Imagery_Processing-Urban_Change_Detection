@@ -35,13 +35,16 @@ def move_tifs_to_folder(tifs, dest_folder):
     for tif in tifs:
         shutil.move(tif, os.path.join(dest_folder, os.path.basename(tif)))
 
-
 if __name__ == "__main__":
     src_folder = "imagery/patch_size_128_patch_overlap_16/patches"
-    dest_folder = "all_tifs"
+    parent_folder = "imagery/patch_size_128_patch_overlap_16/"
+    dest_folder = "imagery/all_tifs"
 
     print("Listing TIFF files by size...")
     tifs = list_tifs_by_size(src_folder)
 
     print("\nMoving TIFF files to 'all_tifs' folder...")
     move_tifs_to_folder(tifs, dest_folder)
+
+    print("\nRemoving the old 'imagery' folder...")
+    shutil.rmtree(parent_folder)
