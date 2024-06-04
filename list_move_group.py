@@ -35,6 +35,19 @@ def move_tifs_to_folder(tifs, dest_folder):
     for tif in tifs:
         shutil.move(tif, os.path.join(dest_folder, os.path.basename(tif)))
 
+def group_tifs_by_band(folder):
+    tifs = glob(os.path.join(folder, '*.tif'))
+    bands = ["B08", "B04", "B03", "B02"]
+
+    for band in bands:
+        band_folder = os.path.join(folder, band)
+        if not os.path.exists(band_folder):
+            os.makedirs(band_folder)
+
+        for tif in tifs:
+            if band in tif:
+                shutil.move(tif, os.path.join(band_folder, os.path.basename(tif)))
+
 if __name__ == "__main__":
     src_folder = "imagery/patch_size_128_patch_overlap_16/patches"
     parent_folder = "imagery/patch_size_128_patch_overlap_16/"
@@ -48,3 +61,6 @@ if __name__ == "__main__":
 
     print("\nRemoving the old 'imagery' folder...")
     shutil.rmtree(parent_folder)
+
+    print("\nGrouping TIFF files by band...")
+    group_tifs_by_band(dest_folder)
