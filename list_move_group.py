@@ -2,11 +2,11 @@ import os
 import shutil
 from glob import glob
 
+
 def list_tifs_by_size(folder):
     # Define possible folder names
     row_offsets = [0, 104, 216]
     column_offsets = [0, 104, 216, 328, 440, 552, 664, 882]
-
 
     # Construct the full paths for all possible subfolders
     subfolders = [f"row_offset_{row}_column_offset_{col}" for row in row_offsets for col in column_offsets]
@@ -26,6 +26,7 @@ def list_tifs_by_size(folder):
 
     return tifs
 
+
 def move_tifs_to_folder(tifs, dest_folder):
     # check whether the destination folder exists already, if not, create it
     if not os.path.exists(dest_folder):
@@ -35,9 +36,10 @@ def move_tifs_to_folder(tifs, dest_folder):
     for tif in tifs:
         shutil.move(tif, os.path.join(dest_folder, os.path.basename(tif)))
 
+
 def group_tifs_by_band(folder):
     tifs = glob(os.path.join(folder, '*.tif'))
-    bands = ["B08", "B04", "B03", "B02"]
+    bands = ["B02", "B03", "B04", "B08"]
 
     for band in bands:
         band_folder = os.path.join(folder, band)
@@ -47,6 +49,7 @@ def group_tifs_by_band(folder):
         for tif in tifs:
             if band in tif:
                 shutil.move(tif, os.path.join(band_folder, os.path.basename(tif)))
+
 
 if __name__ == "__main__":
     src_folder = "imagery/patch_size_128_patch_overlap_16/patches"
